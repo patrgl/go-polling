@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <script src="https://unpkg.com/htmx.org@2.0.1"></script>
+    <style>
+        body{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Railway', sans-serif;
+            text-align: center;
+        }
+
+        .main-holder {
+            text-align: left;
+        }
+
+        #results {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            outline-style: solid; 
+            outline-color: rgba(128, 128, 128, 0.339);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-holder">
+        <h1>{{ .Name }}</h1>
+        Poll link: <a href="{{ .CompletePollLink }}">{{ .CompletePollLink }}</a>
+        <div id="results">
+        </div>
+        <form hx-post="/get-results" hx-target="#results" hx-trigger="load, every 10s">
+            <input type="hidden" name="poll-id" value="{{ .ID }}">
+        </form>
+    </div>
+</body>
+</html>

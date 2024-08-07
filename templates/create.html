@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Poll</title>
+    <script src="https://unpkg.com/htmx.org@2.0.1"></script>
+    <style>
+        body{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Railway', sans-serif;
+            text-align: center;
+        }
+        input {
+            width: 90%;
+        }
+        button {
+            margin-top: 5px;
+            width: 90%;
+        }
+        #poll-links {
+            margin-top: 5px;
+        }
+        .form-holder {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-holder">
+        <h1>Create a Poll</h1>
+        <form hx-post="/submit-new-poll" hx-target="#poll-links">
+            <label for="poll-name">Poll Name</label>
+            <input type="text" name="poll-name" placeholder="Poll Name"> <br> <br>
+            <label for="ip-limit">Voting limit per IP</label> <br>
+            <select name="ip-limit" id="ip-limit">
+                <option value="none">None</option>
+                <option value="one">One vote per IP</option>
+            </select>
+            <br><br><label for="poll-options">Enter options delimmited by commas: (Red,Green,Blue)</label>
+            <input type="textarea" name="poll-options" placeholder="Poll Options">
+            <button type="submit">Create Poll</button>
+        </form>
+        <div id="poll-links">
+        </div>
+    </div>
+</body>
+</html>
