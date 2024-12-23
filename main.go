@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"go-polling/polls"
 	"go-polling/vote"
@@ -13,6 +14,10 @@ import (
 
 func main() {
 	const base_url string = "localhost:8080/"
+
+	os.Setenv("baseurl", "localhost:8080")
+
+	baseUrl := os.Getenv("baseurl")
 
 	db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
 	if err != nil {
@@ -36,8 +41,11 @@ func main() {
 	mux.HandleFunc("/vote/{poll_link}", vote.VotePage(db))
 	mux.HandleFunc("POST /submit-vote", vote.SubmitVote(db, base_url))
 
-	fmt.Println("Running on http://localhost:8080")
-	if err := http.ListenAndServe("localhost:8080", mux); err != nil {
-		fmt.Println(err.Error())
+	fmt.Printf("Serving on %s", baseUrl)
+	err = http.ListenAndServe(baseUrl, mux)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("Failed to start server")
+		return
 	}
 }
